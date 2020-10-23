@@ -1,0 +1,72 @@
+{% extends 'newecom/main.html' %}
+{% load static %}
+{% block content %}
+        <div class="box_product p-2 border-info">
+            <img src="{{ product.imageURL }}" />
+            <div class="mota">
+                <h3>{{ product.name }}</h3>
+                <p>Giá: {{ product.price }} triệu</p>
+                <form action="{% url 'update' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group form-inline">
+                      <label for="soluong">Số lượng: </label>
+                      <select class="form-control" id="soluong" name="quantity">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                      </select>
+                    </div>
+                    <input type="hidden" name="productId" value="{{ product.id }}" />
+                    <input class="btn btn-info" type="submit" value="Thêm vào giỏ hàng"/>
+                </form>
+            </div>
+        </div>
+        <h3>Comments for product</h3>
+        <div class="border">
+            {% for comment in comments %}
+            <div class="media p-3">
+                  <img src="{% static 'images/sanphamhai.jpg' %}" class="mr-3 mt-3 rounded-circle" style="width:60px;">
+                  <div class="media-body">
+                      <h6>{{ comment.customer.name }}<small> / Posted at {{comment.created_on}}</small></h6>
+                      <div>
+                          <p>{{ comment.content | linebreaks }}</p>
+                      </div>
+                      <a href="#formReview" onclick="addReview('{{comment.id}}')">Reply</a>
+                      {% for com in comment.comment_set.all %}
+                          <div class="media p-3">
+                                <img src="{% static 'images/sanphamhai.jpg' %}" class="mr-3 mt-3 rounded-circle" style="width:45px;">
+                                 <div class="media-body">
+                                    <h6>{{ com.customer.name }}<small> / Posted at {{comment.created_on}}</small></h6>
+                                    <div>
+                                        <p>{{ com.content | linebreaks }}</p>
+                                    </div>
+                                     <a href="#formReview" onclick="addReview('{{comment.id}}')">Reply</a>
+                                 </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="card-body">
+        <form action="{% url 'product' product.id %}" method="post" id="formReview" style="margin-top: 1.3em;">
+          <input type="hidden" name="parent" id="contactparent" value="">
+          {% csrf_token %}
+            <div class="input-group mb-2" id="formcontent">
+              {{ comment_form.content }}
+            </div>
+          <button type="submit" class="btn btn-primary  btn-lg">Add</button>
+        </form>
+    </div>
+    <script>
+        function addReview(id){
+            document.getElementById("contactparent").value = id;
+        }
+    </script>
+{% endblock %}

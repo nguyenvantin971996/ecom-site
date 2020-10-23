@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="bg-info">
+    <div class="box_login bg-success mx-auto">
+        <h3 style="text-align:center">Sign in</h3>
+        <form action="{% url 'signin' %}" method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                {{form.username}}
+            </div>
+            <div class="input-group mb-3">
+                {{form.email}}
+            </div>
+            <div class="input-group mb-3">
+                {{form.password1}}
+            </div>
+            <div class="input-group mb-3">
+                {{form.password2}}
+            </div>
+            <input class="btn btn-warning" type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+<script>
+    var form_fields = document.getElementsByTagName('input')
+    form_fields[1].placeholder='Username..';
+    form_fields[2].placeholder='Email..';
+	form_fields[3].placeholder='Enter password...';
+	form_fields[4].placeholder='Confirm password...';
+	for (var field in form_fields){
+			form_fields[field].className += ' form-control'
+		}
+</script>
+</html>

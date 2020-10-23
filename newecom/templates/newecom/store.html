@@ -1,0 +1,36 @@
+{% extends 'newecom/main.html' %}
+{% load static %}
+{% block content %}
+        <div class="row">
+            <div class="col-sm-3 bg-info">
+                <form action="{% url 'store' %}" method="post">
+                    {% csrf_token %}
+                    <label for="productname">Tên sản phẩm: </label>
+                    <input class="form-control" value="{{ten}}" type="text" name="name" placeholder="Name.." id="productname">
+                    <label for="productminprice">Min price: </label>
+                    <input class="form-control" value="{{min}}" type="text" name="minprice" placeholder="Min price.." id="productminprice">
+                    <label for="productmaxprice">Max price: </label>
+                    <input class="form-control" value="{{max}}"  type="text" name="maxprice" placeholder="Min price.." id="productmaxprice">
+                    <input type="submit" class="btn btn-danger mt-2" value="Search">
+                </form>
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                {% for obj in products %}
+                <div class="col-sm-3">
+                    <div class="box_element">
+                        <a href="{% url 'product' obj.id %}"><img src="{{ obj.imageURL }}" /></a>
+                        <hr>
+                        <div class="mota">
+                            <h3>{{ obj.name }}</h3>
+                            <p>Giá: {{ obj.price }} triệu</p>
+                        </div>
+                        <a class="btn btn-info mx-auto d-block" role="button" href="{% url 'product' obj.id %}">Xem thêm</a>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

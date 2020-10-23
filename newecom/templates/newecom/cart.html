@@ -1,0 +1,57 @@
+{% extends 'newecom/main.html' %}
+{% load static %}
+{% block content %}
+        <h1>Thông tin giỏ hàng</h1>
+        <hr />
+        <div style="display:flex;text-align:center">
+            <div style="flex:3">Sản phẩm</div>
+            <div style="flex:2">Tên sản phẩm</div>
+            <div style="flex:2">Số lượng</div>
+            <div style="flex:2">Đơn giá (vnd)</div>
+            <div style="flex:3">Thành tiền (vnd)</div>
+            <div style="flex:1">Xóa</div>
+        </div>
+        <hr />
+        {% for item in items %}
+        <div style="display:flex;text-align:center">
+            <div style="flex:3"><a href="{% url 'product' item.product.id %}"><img style="width:70%;height:300px" src="{{ item.product.imageURL }}" /></a></div>
+            <div style="flex:2">{{ item.product.name }}</div>
+            <div style="flex:2">
+                <form action="{% url 'update' %}" method="get">
+                    {% csrf_token %}
+                        <div class="form-group form-inline">
+                          <label for="soluong">Số lượng: </label>
+                          <select class="form-control" id="soluong" name="soluong">
+                            <option selected>{{ item.quantity }}</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                            <option>9</option>
+                          </select>
+                        </div>
+                    <input type="hidden" name="itemId" value="{{ item.id }}" />
+                    <input class="btn btn-info" type="submit" value="Update"/>
+                </form>
+            </div>
+            <div style="flex:2">{{ item.product.price }} tr</div>
+            <div style="flex:3">{{ item.get_total }} tr</div>
+            <div style="flex:1">
+                <form method="post" action="{% url 'delete' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="orderItemId" value="{{ item.id }}"/>
+                    <input type="submit" value="Xóa" class="btn btn-info" />
+                </form>
+            </div>
+        </div>
+        <hr />
+        {% endfor %}
+        <div style="float:right">
+            <h3>Tổng: {{ order.get_cart_total }} tr (vnd)</h3>
+            <a class="btn btn-success mb-3" role="button" href="{% url 'checkout' %}">Thanh toán</a>
+        </div>
+{% endblock %}
